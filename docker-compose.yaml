@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-tria}
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - db
+    hostname: database
+    restart: unless-stopped
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  postgres:
