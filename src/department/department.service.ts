@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PatchDepartmentDto } from './dtos/department.dto';
 
 @Injectable()
 export class DepartmentService {
@@ -34,5 +35,31 @@ export class DepartmentService {
     } catch (err) {
       throw new NotFoundException('Department Not Found');
     }
+  }
+
+  updateDepartment(id: string, data: PatchDepartmentDto) {
+    return this.db.department.update({
+      where: {
+        id,
+      },
+      data: {
+        name: data.name,
+        description: data.description,
+        managingDepartmentId: data.manager,
+      },
+    });
+  }
+
+  getManagedDepartments(id: string) {
+    return this.db.department.findMany({
+      where: {
+        managingDepartmentId: id,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+    });
   }
 }
