@@ -10,7 +10,7 @@ export class CreateDepartmentDto {
   @IsString()
   @IsOptional()
   @IsUUID()
-  manager: string;
+  manager: string | undefined;
 }
 
 export class PutDepartmentDto extends CreateDepartmentDto {}

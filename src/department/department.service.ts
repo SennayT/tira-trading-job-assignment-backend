@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { PatchDepartmentDto } from './dtos/department.dto';
+import { CreateDepartmentDto, PatchDepartmentDto } from './dtos/department.dto';
 
 @Injectable()
 export class DepartmentService {
@@ -14,6 +14,16 @@ export class DepartmentService {
         name: true,
         description: true,
         managingDepartmentId: true,
+      },
+    });
+  }
+
+  createDepartment({ name, description, manager }: CreateDepartmentDto) {
+    return this.db.department.create({
+      data: {
+        name,
+        description,
+        managingDepartmentId: manager,
       },
     });
   }
