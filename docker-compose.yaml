@@ -1,5 +1,19 @@
 version: '3.9'
 services:
+  server:
+    build:
+      target: local
+    ports:
+      - ${PORT:-4000}:4000
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+    networks:
+      - db
+    restart: always
+    env_file: .env
+
   db:
     image: postgres:14
     environment:
@@ -8,7 +22,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-tria}
       PGDATA: /data/postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres:/data/postgres
     networks:
